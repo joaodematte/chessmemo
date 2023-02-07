@@ -1,3 +1,3 @@
 export default function Home() {
-  return <h1>hello world</h1>;
+  return <main className="mx-auto h-96 w-full max-w-2xl bg-red-500" />;
 }
