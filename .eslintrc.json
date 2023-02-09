@@ -32,6 +32,12 @@
   "plugins": ["react", "import"],
   "rules": {
     "react/react-in-jsx-scope": "off",
-    "react/require-default-props": "off"
+    "react/require-default-props": "off",
+    "react/jsx-props-no-spreading": "off",
+    "import/prefer-default-export": "off",
+    "import/order": [
+      "error",
+      { "groups": ["type", "object", "builtin", "external", "internal", "parent", "sibling", "index"] }
+    ]
   }
 }

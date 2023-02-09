@@ -1,29 +1,21 @@
-import BoardSquare from '@/components/BoardSquare';
-import { Board, BoardLineProps } from '@/types/board';
+'use client';
 
-const BOARD: Board = {
-  alphabet: ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'],
-  numbers: [1, 2, 3, 4, 5, 6, 7, 8]
-};
-
-function BoardLine({ word, numbers, even }: BoardLineProps) {
-  return (
-    <div id={word} className="h-24 w-full">
-      {numbers.map((number) => (
-        <BoardSquare key={`${word}${number}`} word={word} number={number} even={even} />
-      ))}
-    </div>
-  );
-}
+import { ThemeProvider } from 'next-themes';
+import Board from '@/components/Board';
+import Header from '@/components/Header';
+import OptionsButton from '@/components/Options';
+import { GameSettingsContextProvider } from '@/context/GameContext';
 
 export default function Home() {
   return (
-    <main className="flex h-full w-full items-center justify-center">
-      <div id="board">
-        {BOARD.alphabet.reverse().map((word, index) => (
-          <BoardLine key={word} word={word} numbers={BOARD.numbers} even={index % 2 === 0} />
-        ))}
-      </div>
+    <main className="relative flex h-full w-full flex-col items-center justify-between">
+      <ThemeProvider attribute="class">
+        <GameSettingsContextProvider>
+          <OptionsButton />
+          <Header />
+          <Board />
+        </GameSettingsContextProvider>
+      </ThemeProvider>
     </main>
   );
 }

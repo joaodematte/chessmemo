@@ -3,5 +3,5 @@
 @tailwind utilities;
 
 body {
-  @apply h-screen w-full;
+  @apply h-screen w-full bg-white text-slate-900 antialiased dark:bg-slate-900 dark:text-slate-50;
 }
