@@ -31,8 +31,11 @@ export function GameSettingsContextProvider({ children }: GameContextProviderPro
 
     if (cachedSettings) {
       setGameSettings(cachedSettings);
-      setIsLoadingSettings(false);
     }
+
+    setIsLoadingSettings(false);
+
+    return () => setIsLoadingSettings(true);
   }, []);
 
   const gameSettingsMemo = useMemo(
