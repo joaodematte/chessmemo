@@ -15,4 +15,5 @@ export interface GameContextProviderProps {
 export interface GameSettingsContextProps {
   gameSettings: GameSettings;
   saveSettings: (settings: GameSettings) => void;
+  isLoadingSettings: boolean;
 }

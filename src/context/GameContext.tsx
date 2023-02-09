@@ -1,14 +1,12 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 
-import { createContext, useMemo, useState } from 'react';
+import { createContext, useEffect, useMemo, useState } from 'react';
 import { useTheme } from 'next-themes';
 import { GameSettingsContextProps, GameContextProviderProps, GameSettings } from '@/types/context';
 
 export const GameSettingsContext = createContext<GameSettingsContextProps>({} as GameSettingsContextProps);
 
-const cachedSettings = localStorage.getItem('chessmemo-settings');
-const parsedSettings = cachedSettings ? (JSON.parse(cachedSettings) as GameSettings) : null;
-const defaultSettings = parsedSettings ?? {
+const defaultSettings: GameSettings = {
   siteTheme: 'system',
   showCoordinates: false,
   boardTheme: 'blue',
@@ -18,6 +16,7 @@ const defaultSettings = parsedSettings ?? {
 export function GameSettingsContextProvider({ children }: GameContextProviderProps) {
   const { setTheme } = useTheme();
 
+  const [isLoadingSettings, setIsLoadingSettings] = useState<boolean>(true);
   const [gameSettings, setGameSettings] = useState<GameSettings>(defaultSettings);
 
   const saveSettings = (settings: GameSettings) => {
@@ -27,10 +26,20 @@ export function GameSettingsContextProvider({ children }: GameContextProviderPro
     localStorage.setItem('chessmemo-settings', JSON.stringify(settings));
   };
 
+  useEffect(() => {
+    const cachedSettings: GameSettings | null = JSON.parse(localStorage.getItem('chessmemo-settings') as string);
+
+    if (cachedSettings) {
+      setGameSettings(cachedSettings);
+      setIsLoadingSettings(false);
+    }
+  }, []);
+
   const gameSettingsMemo = useMemo(
     () => ({
       gameSettings,
-      saveSettings
+      saveSettings,
+      isLoadingSettings
     }),
     [gameSettings, saveSettings]
   );
