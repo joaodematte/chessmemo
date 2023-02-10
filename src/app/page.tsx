@@ -5,7 +5,8 @@ import { useContext } from 'react';
 import Board from '@/components/Board';
 import Header from '@/components/Header';
 import OptionsButton from '@/components/Options';
-import { GameSettingsContext, GameSettingsContextProvider } from '@/context/GameContext';
+import { GameSettingsContext, GameSettingsContextProvider } from '@/context/GameSettingsContext';
+import { GameEngineContextProvider } from '@/context/GameEngineContext';
 
 function LoadingSpinner() {
   return (
@@ -57,7 +58,9 @@ export default function Home() {
     <main className="relative flex h-full w-full flex-col items-center justify-between">
       <ThemeProvider attribute="class">
         <GameSettingsContextProvider>
-          <LoadingWrapper />
+          <GameEngineContextProvider>
+            <LoadingWrapper />
+          </GameEngineContextProvider>
         </GameSettingsContextProvider>
       </ThemeProvider>
     </main>

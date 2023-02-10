@@ -1,3 +1,5 @@
+import { useContext } from 'react';
+import { GameSettingsContext } from '@/context/GameSettingsContext';
 import { BoardProps } from '@/types/board';
 import BoardSquare from './BoardSquare';
 
@@ -7,15 +9,17 @@ const BOARD: BoardProps = {
 };
 
 export default function Board() {
+  const { gameSettings } = useContext(GameSettingsContext);
+
+  const parsedAlphabet = gameSettings.viewAs === 'black' ? BOARD.alphabet : [...BOARD.alphabet].reverse();
+
   return (
     <div id="board" className="grid grid-cols-8 grid-rows-8">
-      {BOARD.alphabet
-        .reverse()
-        .map((word, index) =>
-          BOARD.numbers.map((number) => (
-            <BoardSquare key={`${word}${number}`} word={word} number={number} even={index % 2 === 0} />
-          ))
-        )}
+      {parsedAlphabet.map((word, index) =>
+        BOARD.numbers.map((number) => (
+          <BoardSquare key={`${word}${number}`} word={word} number={number} even={index % 2 === 0} />
+        ))
+      )}
     </div>
   );
 }

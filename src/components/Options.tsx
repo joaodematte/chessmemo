@@ -1,8 +1,8 @@
 'use client';
 
 import { SetStateAction, useContext, useState } from 'react';
-import { GameSettingsContext } from '@/context/GameContext';
-import { BoardTheme, SiteTheme } from '@/types/context';
+import { GameSettingsContext } from '@/context/GameSettingsContext';
+import { BoardTheme, SiteTheme, ViewAs } from '@/types/gameSettingsContext';
 import { Button } from './ui/Button';
 import {
   Dialog,
@@ -25,6 +25,11 @@ interface SiteThemeSelectorProps {
 interface BoardThemeSelectorProps {
   defaultValue: BoardTheme;
   setBoardTheme: React.Dispatch<SetStateAction<BoardTheme>>;
+}
+
+interface ViewAsSelectorProps {
+  defaultValue: ViewAs;
+  setViewAs: React.Dispatch<SetStateAction<ViewAs>>;
 }
 
 function SiteThemeSelector({ defaultValue, setSiteTheme }: SiteThemeSelectorProps) {
@@ -64,15 +69,35 @@ function BoardThemeSelector({ defaultValue, setBoardTheme }: BoardThemeSelectorP
   );
 }
 
+function ViewAsSelector({ defaultValue, setViewAs }: ViewAsSelectorProps) {
+  const handleValueChange = (value: string) => {
+    setViewAs(value as ViewAs);
+  };
+
+  return (
+    <Select defaultValue={defaultValue} onValueChange={handleValueChange}>
+      <SelectTrigger className="w-[180px]">
+        <SelectValue placeholder="Select a view as" />
+      </SelectTrigger>
+      <SelectContent>
+        <SelectItem value="white">White</SelectItem>
+        <SelectItem value="black">Black</SelectItem>
+      </SelectContent>
+    </Select>
+  );
+}
+
 export default function OptionsButton() {
   const { gameSettings, saveSettings } = useContext(GameSettingsContext);
 
+  const [viewAs, setViewAs] = useState<ViewAs>(gameSettings.viewAs);
   const [siteTheme, setSiteTheme] = useState<SiteTheme>(gameSettings.siteTheme);
   const [boardTheme, setBoardTheme] = useState<BoardTheme>(gameSettings.boardTheme);
   const [showCoordinates, setShowCoordinates] = useState<boolean>(gameSettings.showCoordinates);
 
   const onSaveSettings = () => {
     const data = {
+      viewAs,
       siteTheme,
       boardTheme,
       showCoordinates,
@@ -95,6 +120,10 @@ export default function OptionsButton() {
           <DialogDescription>All your settings are gonna be persisted.</DialogDescription>
         </DialogHeader>
         <div id="formSettings" className="grid gap-4 py-4">
+          <div className="grid grid-cols-4 items-center gap-4">
+            <Label htmlFor="viewAs">View as</Label>
+            <ViewAsSelector defaultValue={viewAs} setViewAs={setViewAs} />
+          </div>
           <div className="grid grid-cols-4 items-center gap-4">
             <Label htmlFor="siteTheme">Site theme</Label>
             <SiteThemeSelector defaultValue={siteTheme} setSiteTheme={setSiteTheme} />

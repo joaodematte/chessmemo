@@ -1,4 +1,4 @@
-type Word = 'a' | 'b' | 'c' | 'd' | 'e' | 'f' | 'g' | 'h';
+export type Word = 'a' | 'b' | 'c' | 'd' | 'e' | 'f' | 'g' | 'h';
 
 export interface BoardProps {
   alphabet: string[];
