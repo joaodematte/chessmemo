@@ -1,6 +1,8 @@
-import { useContext } from 'react';
-import { GameSettingsContext } from '@/context/GameSettingsContext';
+'use client';
+
+import { useAtom } from 'jotai';
 import { BoardProps } from '@/types/board';
+import { gameSettingsDerivedAtom } from '@/stores/gameSettings';
 import BoardSquare from './BoardSquare';
 
 const BOARD: BoardProps = {
@@ -9,7 +11,7 @@ const BOARD: BoardProps = {
 };
 
 export default function Board() {
-  const { gameSettings } = useContext(GameSettingsContext);
+  const [gameSettings] = useAtom(gameSettingsDerivedAtom);
 
   const parsedAlphabet = gameSettings.viewAs === 'black' ? BOARD.alphabet : [...BOARD.alphabet].reverse();
 

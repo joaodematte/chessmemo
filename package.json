@@ -21,6 +21,7 @@
     "class-variance-authority": "^0.4.0",
     "clsx": "^1.2.1",
     "eslint-config-next": "13.1.6",
+    "jotai": "^2.0.2",
     "lucide-react": "^0.112.0",
     "next": "13.1.6",
     "next-themes": "^0.2.1",

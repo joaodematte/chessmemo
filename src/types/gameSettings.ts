@@ -9,13 +9,3 @@ export interface GameSettings {
   boardTheme: BoardTheme;
   timer: number;
 }
-
-export interface GameContextProviderProps {
-  children: React.ReactNode;
-}
-
-export interface GameSettingsContextProps {
-  gameSettings: GameSettings;
-  saveSettings: (settings: GameSettings) => void;
-  isLoadingSettings: boolean;
-}

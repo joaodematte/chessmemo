@@ -2,10 +2,11 @@
 
 import clsx from 'clsx';
 import { useContext, useState } from 'react';
-import { GameSettingsContext } from '@/context/GameSettingsContext';
+import { useAtom } from 'jotai';
 import { BoardSquareProps } from '@/types/board';
 import { GameEngineContext } from '@/context/GameEngineContext';
 import { GameStatus } from '@/types/gameEngineContext';
+import { gameSettingsDerivedAtom } from '@/stores/gameSettings';
 
 const COLOR_SCHEMES = {
   blue: {
@@ -19,10 +20,11 @@ const COLOR_SCHEMES = {
 };
 
 export default function BoardSquare({ word, number, even }: BoardSquareProps) {
+  const [gameSettings] = useAtom(gameSettingsDerivedAtom);
+
   const [clicked, setClicked] = useState<boolean>(false);
 
   const { gameState } = useContext(GameEngineContext);
-  const { gameSettings } = useContext(GameSettingsContext);
 
   const className = clsx(
     'relative h-full w-12 h-12 sm:w-20 sm:h-20 md:w-24 md:h-24 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:z-10 transition-colors duration-300',

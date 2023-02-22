@@ -26,5 +26,5 @@ export interface GameEngineContextProps {
 }
 
 export interface GameEngineContextProviderProps {
-  children: React.ReactElement;
+  children: React.ReactNode | React.ReactNode[];
 }

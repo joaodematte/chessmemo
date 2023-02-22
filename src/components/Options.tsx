@@ -1,8 +1,9 @@
 'use client';
 
-import { SetStateAction, useContext, useState } from 'react';
-import { GameSettingsContext } from '@/context/GameSettingsContext';
-import { BoardTheme, SiteTheme, ViewAs } from '@/types/gameSettingsContext';
+import { SetStateAction, useState } from 'react';
+import { useAtom } from 'jotai';
+import { BoardTheme, SiteTheme, ViewAs } from '@/types/gameSettings';
+import { gameSettingsDerivedAtom } from '@/stores/gameSettings';
 import { Button } from './ui/Button';
 import {
   Dialog,
@@ -88,7 +89,7 @@ function ViewAsSelector({ defaultValue, setViewAs }: ViewAsSelectorProps) {
 }
 
 export default function OptionsButton() {
-  const { gameSettings, saveSettings } = useContext(GameSettingsContext);
+  const [gameSettings, setSettings] = useAtom(gameSettingsDerivedAtom);
 
   const [viewAs, setViewAs] = useState<ViewAs>(gameSettings.viewAs);
   const [siteTheme, setSiteTheme] = useState<SiteTheme>(gameSettings.siteTheme);
@@ -104,7 +105,7 @@ export default function OptionsButton() {
       timer: 10000
     };
 
-    saveSettings(data);
+    setSettings(data);
   };
 
   return (

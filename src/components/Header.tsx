@@ -1,3 +1,5 @@
+'use client';
+
 import { useContext } from 'react';
 import { GameEngineContext } from '@/context/GameEngineContext';
 import { GameStatus } from '@/types/gameEngineContext';
