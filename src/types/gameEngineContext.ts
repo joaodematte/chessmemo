@@ -25,7 +25,7 @@ export interface GameEngineContextProps {
   gameState: GameEngineState;
   target: string;
   previousTarget: string;
-  handleHit: (guess: string) => void;
+  handleHit: (guess: string) => boolean;
 }
 
 export interface GameEngineContextProviderProps {

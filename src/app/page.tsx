@@ -8,6 +8,7 @@ import OptionsButton from '@/components/Options';
 import { GameSettingsContext, GameSettingsContextProvider } from '@/context/GameSettingsContext';
 import { GameEngineContextProvider } from '@/context/GameEngineContext';
 import LoadingSpinner from '@/components/ui/LoadingSpinner';
+import EndGameDialog from '@/components/EndGameDialog';
 
 function LoadingWrapper() {
   const { isLoadingSettings } = useContext(GameSettingsContext);
@@ -22,6 +23,7 @@ function LoadingWrapper() {
 
   return (
     <>
+      <EndGameDialog />
       <OptionsButton />
       <Header />
       <Board />

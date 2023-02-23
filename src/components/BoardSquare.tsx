@@ -20,8 +20,9 @@ const COLOR_SCHEMES = {
 
 export default function BoardSquare({ number, even, value }: BoardSquareProps) {
   const [clicked, setClicked] = useState<boolean>(false);
+  const [hit, setHit] = useState<boolean>(false);
 
-  const { gameState, handleHit, previousTarget } = useContext(GameEngineContext);
+  const { gameState, handleHit } = useContext(GameEngineContext);
   const { gameSettings } = useContext(GameSettingsContext);
 
   const className = clsx(
@@ -29,8 +30,8 @@ export default function BoardSquare({ number, even, value }: BoardSquareProps) {
     {
       [COLOR_SCHEMES[gameSettings.boardTheme].light]: (!even && number % 2 === 0) || (even && number % 2 !== 0),
       [COLOR_SCHEMES[gameSettings.boardTheme].dark]: (even && number % 2 === 0) || (!even && number % 2 !== 0),
-      'bg-red-500 focus:ring-red-500 transition-none': clicked && value !== previousTarget,
-      'bg-green-500 focus:ring-green-500 transition-none': clicked && value === previousTarget
+      'bg-red-500 focus:ring-red-500 transition-none': clicked && !hit,
+      'bg-green-500 focus:ring-green-500 transition-none': clicked && hit
     }
   );
 
@@ -38,7 +39,7 @@ export default function BoardSquare({ number, even, value }: BoardSquareProps) {
     if (gameState.status !== GameStatus.STARTED) return;
 
     setClicked(true);
-    handleHit(value);
+    setHit(handleHit(value));
 
     setTimeout(() => {
       setClicked(false);

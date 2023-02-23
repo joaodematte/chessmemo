@@ -11,7 +11,7 @@ import { randomIntFromInterval } from '@/lib/utils';
 
 const initialState: GameEngineState = {
   status: GameStatus.NOT_STARTED,
-  duration: 1000 * 15,
+  duration: 1000 * 2,
   attempts: null,
   hits: null,
   errors: null,
@@ -63,7 +63,11 @@ export function GameEngineContextProvider({ children }: GameEngineContextProvide
       if (guess === target) {
         setBeforePosition(target);
         setTarget(getToClick());
+
+        return true;
       }
+
+      return false;
     },
     [getToClick, target]
   );
