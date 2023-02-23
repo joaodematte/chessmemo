@@ -23,6 +23,9 @@ export interface GameEngineState {
 export interface GameEngineContextProps {
   handleStartGame: () => void;
   gameState: GameEngineState;
+  target: string;
+  previousTarget: string;
+  handleHit: (guess: string) => void;
 }
 
 export interface GameEngineContextProviderProps {

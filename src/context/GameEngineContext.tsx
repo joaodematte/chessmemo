@@ -1,4 +1,4 @@
-import { createContext, useCallback, useMemo, useReducer } from 'react';
+import { createContext, useCallback, useMemo, useReducer, useState } from 'react';
 import {
   ActionType,
   GameEngineContextProps,
@@ -6,10 +6,12 @@ import {
   GameEngineState,
   GameStatus
 } from '@/types/gameEngineContext';
+import { BOARD } from '@/lib/board';
+import { randomIntFromInterval } from '@/lib/utils';
 
 const initialState: GameEngineState = {
   status: GameStatus.NOT_STARTED,
-  duration: 5 * 1000,
+  duration: 1000 * 15,
   attempts: null,
   hits: null,
   errors: null,
@@ -45,11 +47,33 @@ export const GameEngineContext = createContext<GameEngineContextProps>({} as Gam
 
 export function GameEngineContextProvider({ children }: GameEngineContextProviderProps) {
   const [gameState, dispatch] = useReducer(reducer, initialState);
+  const [target, setTarget] = useState<string>('');
+  const [beforePosition, setBeforePosition] = useState<string>('');
+
+  const getToClick = useCallback((): string => {
+    const word = BOARD.alphabet[randomIntFromInterval(0, BOARD.alphabet.length - 1)];
+    const number = BOARD.numbers[randomIntFromInterval(0, BOARD.numbers.length - 1)];
+    const temptTarget = `${word}${number}`;
+
+    return beforePosition === temptTarget ? getToClick() : temptTarget;
+  }, [beforePosition]);
+
+  const handleHit = useCallback(
+    (guess: string) => {
+      if (guess === target) {
+        setBeforePosition(target);
+        setTarget(getToClick());
+      }
+    },
+    [getToClick, target]
+  );
 
   const handleStartGame = useCallback(() => {
     dispatch({
       type: ActionType.STARTING_GAME
     });
+
+    setTarget(getToClick());
 
     setTimeout(() => {
       dispatch({
@@ -62,14 +86,17 @@ export function GameEngineContextProvider({ children }: GameEngineContextProvide
         });
       }, gameState.duration);
     }, 3000);
-  }, [gameState]);
+  }, [gameState.duration, getToClick]);
 
   const gameEngineMemo = useMemo(
     () => ({
       gameState,
-      handleStartGame
+      handleStartGame,
+      target,
+      handleHit,
+      previousTarget: beforePosition
     }),
-    [gameState, handleStartGame]
+    [gameState, handleHit, handleStartGame, target, beforePosition]
   );
 
   return <GameEngineContext.Provider value={gameEngineMemo}>{children}</GameEngineContext.Provider>;

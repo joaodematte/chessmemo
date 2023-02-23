@@ -18,10 +18,10 @@ const COLOR_SCHEMES = {
   }
 };
 
-export default function BoardSquare({ word, number, even }: BoardSquareProps) {
+export default function BoardSquare({ number, even, value }: BoardSquareProps) {
   const [clicked, setClicked] = useState<boolean>(false);
 
-  const { gameState } = useContext(GameEngineContext);
+  const { gameState, handleHit, previousTarget } = useContext(GameEngineContext);
   const { gameSettings } = useContext(GameSettingsContext);
 
   const className = clsx(
@@ -29,8 +29,8 @@ export default function BoardSquare({ word, number, even }: BoardSquareProps) {
     {
       [COLOR_SCHEMES[gameSettings.boardTheme].light]: (!even && number % 2 === 0) || (even && number % 2 !== 0),
       [COLOR_SCHEMES[gameSettings.boardTheme].dark]: (even && number % 2 === 0) || (!even && number % 2 !== 0),
-      'bg-red-500 focus:ring-red-500 transition-none': clicked && `${word}${number}` !== 'a1',
-      'bg-green-500 focus:ring-green-500 transition-none': clicked && `${word}${number}` === 'a1'
+      'bg-red-500 focus:ring-red-500 transition-none': clicked && value !== previousTarget,
+      'bg-green-500 focus:ring-green-500 transition-none': clicked && value === previousTarget
     }
   );
 
@@ -38,6 +38,7 @@ export default function BoardSquare({ word, number, even }: BoardSquareProps) {
     if (gameState.status !== GameStatus.STARTED) return;
 
     setClicked(true);
+    handleHit(value);
 
     setTimeout(() => {
       setClicked(false);
@@ -45,15 +46,9 @@ export default function BoardSquare({ word, number, even }: BoardSquareProps) {
   };
 
   return (
-    <button
-      id={`${word}${number}`}
-      aria-label={`${word}${number}`}
-      type="button"
-      className={className}
-      onClick={handleOnClick}
-    >
+    <button id={value} aria-label={value} type="button" className={className} onClick={handleOnClick}>
       {gameSettings.showCoordinates ? (
-        <span className="absolute top-2 left-2 text-sm font-medium text-black opacity-25">{`${word}${number}`}</span>
+        <span className="absolute top-2 left-2 text-sm font-medium text-black opacity-25">{value}</span>
       ) : null}
     </button>
   );

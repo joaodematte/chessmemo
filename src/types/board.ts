@@ -6,7 +6,7 @@ export interface BoardProps {
 }
 
 export interface BoardSquareProps {
-  word: string;
   number: number;
   even: boolean;
+  value: string;
 }

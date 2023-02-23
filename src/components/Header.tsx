@@ -4,11 +4,22 @@ import { GameStatus } from '@/types/gameEngineContext';
 import { Button } from './ui/Button';
 
 export default function Header() {
-  const { handleStartGame, gameState } = useContext(GameEngineContext);
+  const { handleStartGame, gameState, target } = useContext(GameEngineContext);
 
-  if (gameState.status === GameStatus.STARTING) return <p>starting</p>;
+  if (gameState.status === GameStatus.STARTING)
+    return (
+      <header className="flex h-full flex-col items-center justify-center p-4 text-center">
+        <p className="font-medium">starting...</p>
+      </header>
+    );
 
-  if (gameState.status === GameStatus.STARTED) return <p>started</p>;
+  if (gameState.status === GameStatus.STARTED)
+    return (
+      <header className="flex h-full flex-col items-center justify-center p-4 text-center">
+        <p className="font-medium">click on</p>
+        <h1 className="text-4xl font-black">{target}</h1>
+      </header>
+    );
 
   return (
     <header className="flex h-full flex-col items-center justify-center p-4 text-center">

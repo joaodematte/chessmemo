@@ -3,6 +3,8 @@
 import { SetStateAction, useContext, useState } from 'react';
 import { GameSettingsContext } from '@/context/GameSettingsContext';
 import { BoardTheme, SiteTheme, ViewAs } from '@/types/gameSettingsContext';
+import { GameEngineContext } from '@/context/GameEngineContext';
+import { GameStatus } from '@/types/gameEngineContext';
 import { Button } from './ui/Button';
 import {
   Dialog,
@@ -88,6 +90,7 @@ function ViewAsSelector({ defaultValue, setViewAs }: ViewAsSelectorProps) {
 }
 
 export default function OptionsButton() {
+  const { gameState } = useContext(GameEngineContext);
   const { gameSettings, saveSettings } = useContext(GameSettingsContext);
 
   const [viewAs, setViewAs] = useState<ViewAs>(gameSettings.viewAs);
@@ -109,8 +112,12 @@ export default function OptionsButton() {
 
   return (
     <Dialog>
-      <DialogTrigger>
-        <Button variant="subtle" className="absolute top-2 right-2 font-bold">
+      <DialogTrigger asChild>
+        <Button
+          variant="subtle"
+          className="absolute top-2 right-2 font-bold"
+          disabled={gameState.status === GameStatus.STARTED || gameState.status === GameStatus.STARTING}
+        >
           options
         </Button>
       </DialogTrigger>
