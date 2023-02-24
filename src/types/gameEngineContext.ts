@@ -8,16 +8,16 @@ export enum GameStatus {
 export enum ActionType {
   START_GAME = 'START_GAME',
   STARTING_GAME = 'STARTING_GAME',
-  STOP_GAME = 'STOP_GAME'
+  STOP_GAME = 'STOP_GAME',
+  INCREASE_ATTEMPTS = 'INCREASE_ATTEMPTS',
+  INCREASE_HITS = 'INCREASE_HITS'
 }
 
 export interface GameEngineState {
   status: GameStatus;
   duration: number;
-  attempts: number | null;
-  hits: number | null;
-  errors: number | null;
-  history: null;
+  attempts: number;
+  hits: number;
 }
 
 export interface GameEngineContextProps {

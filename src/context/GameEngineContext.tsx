@@ -11,21 +11,21 @@ import { randomIntFromInterval } from '@/lib/utils';
 
 const initialState: GameEngineState = {
   status: GameStatus.NOT_STARTED,
-  duration: 1000 * 2,
-  attempts: null,
-  hits: null,
-  errors: null,
-  history: null
+  duration: 1000 * 30,
+  attempts: 0,
+  hits: 0
 };
 
 function reducer(
   state: GameEngineState,
-  action: { type: ActionType; payload?: { attempts: number; hits: number; errors: number; history: null } }
+  action: { type: ActionType; payload?: { attempts: number; hits: number } }
 ): GameEngineState {
   switch (action.type) {
     case ActionType.STARTING_GAME:
       return {
         ...state,
+        attempts: 0,
+        hits: 0,
         status: GameStatus.STARTING
       };
     case ActionType.START_GAME:
@@ -37,6 +37,16 @@ function reducer(
       return {
         ...state,
         status: GameStatus.FINISHED
+      };
+    case ActionType.INCREASE_ATTEMPTS:
+      return {
+        ...state,
+        attempts: state.attempts + 1
+      };
+    case ActionType.INCREASE_HITS:
+      return {
+        ...state,
+        hits: state.hits + 1
       };
     default:
       throw Error('Unknown action.');
@@ -60,9 +70,17 @@ export function GameEngineContextProvider({ children }: GameEngineContextProvide
 
   const handleHit = useCallback(
     (guess: string) => {
+      dispatch({
+        type: ActionType.INCREASE_ATTEMPTS
+      });
+
       if (guess === target) {
         setBeforePosition(target);
         setTarget(getToClick());
+
+        dispatch({
+          type: ActionType.INCREASE_HITS
+        });
 
         return true;
       }
